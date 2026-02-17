@@ -1,0 +1,14 @@
+{
+  "name": "@isiguzoflorence521-gif/Nexus-Cloud-VRr",
+  "version": "1.0.0",
+  "description": "The automated virtual console OS for Feebz VR.",
+  "main": "Code.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "keywords": ["VR", "CloudGaming", "Feebz", "ShadowPC", "SteamVR"]
+}
