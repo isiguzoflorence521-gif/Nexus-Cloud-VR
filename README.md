@@ -1,152 +1,56 @@
-🌌 Nexus Cloud VR (NCVR)
-The Cloud‑Native Virtual Console for Feebz VR
-Nexus Cloud VR (NCVR) is a DIY, automated cloud‑gaming ecosystem that transforms any Feebz VR 2.0 headset and smartphone into a powerful PC‑VR device by orchestrating Shadow PC through a Google Apps Script command center. It eliminates manual driver setup and focuses on seamless, console‑like automation.
- [git-scm.com]
+# 🌌 Nexus Cloud VR (NCVR) 
+### *The Cloud-Native Virtual Console Ecosystem*
+**Version:** `1.1.0 - Performance Optimization Patch`  
+**Status:** `Stable Release`  
+**Codename:** `Genesis-System`
 
-🎮 The “Nexus” Experience
-NCVR delivers a streamlined VR pipeline:
+---
 
-Console‑style automation — Inspired by systems like The Playroom, NCVR removes setup hassles. [git-scm.com]
-Chromebook Command Center — Control all VR operations through a Google Apps Script dashboard. [git-scm.com]
-Protocol Hot‑Swapping — Switch instantly between iVRy, VRidge, and Trinus VR drivers. [git-scm.com]
-Ultra‑Link Stability — Optimized for USB tethering to reduce latency vs Wi‑Fi. [git-scm.com]
-Live Telemetry — NCVR logs real‑time performance metrics into Logs/session_log.txt. [git-scm.com]
+## 📜 Project Overview
+**Nexus Cloud VR (NCVR)** is a high-performance, automated "Virtual Console" layer designed to bridge the gap between affordable smartphone VR hardware and high-fidelity PC-VR gaming. Developed on a **Dell Chromebook 3100** using **VS Code**, NCVR orchestrates a [Shadow PC](https://shadow.tech) cloud instance to deliver 1:1 responsive VR streaming to [Feebz VR 2.0](https://www.feebzstore.com) headsets via a dedicated **Ultra-Link USB** architecture.
 
+Inspired by the tactile, responsive feel of Sony’s *The Playroom*, NCVR removes the "friction" of cloud gaming by automating driver orchestration, network handshakes, and lens calibration through a centralized API.
 
-🧰 Tech Stack
+---
 
+## 🏗️ System Architecture & Stack
+The NCVR ecosystem is built on a precise three-tier language architecture optimized for low-latency command execution:
 
+*   **🖥️ 48.5% HTML (Frontend Dashboard):** A custom-coded [Google Apps Script Web Portal](https://developers.google.com) that provides a "Console-Style" UI for remote management from any Chromebook or mobile browser.
+*   **⚙️ 29.0% JavaScript (The Nexus API):** The backend "Brain" hosted on Google Cloud. It manages protocol requests, handles `POST` telemetry from the Shadow PC, and serves dynamic JSON configurations.
+*   **🚀 22.5% Batchfile (Automation Engine):** The "Muscle" running on the [Shadow PC](https://shadow.tech). A highly optimized `NCVR_Switch.bat` that uses `curl` to execute real-time driver hot-swapping and system reboots.
 
+---
 
+## 🎮 Key Features
 
+### 1. The Nexus Protocol (Hot-Swapping)
+No more manual driver configuration. Change your "Game Profile" on the NCVR Dashboard, and the system automatically:
+- Terminates existing [SteamVR](https://store.steampowered.com) processes.
+- Swaps binaries between **iVRy**, **VRidge**, or **Trinus CBVR**.
+- Re-initializes the virtual display driver within 30 seconds.
 
+### 2. Ultra-Link USB Connectivity
+By bypassing standard 5GHz Wi-Fi, NCVR utilizes Android/iOS **USB Tethering** to create a high-speed data tunnel. This reduces the "Motion-to-Photon" latency to professional standards, eliminating motion sickness in fast-paced titles like *Assetto Corsa* or *VRChat*.
 
+### 3. Dynamic Lens Profiling
+Centralized `phone_profiles.json` provides tailored distortion coefficients for the [Feebz 2.0 Optics](https://www.amazon.com). Supports displays up to 2K resolution at 90Hz.
 
+---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-LayerTechnologyBackend / AutomationGoogle Apps Script (Code.gs) [git-scm.com]Local AutomationWindows Batch (NCVR_Switch.bat) + curl bridge [git-scm.com]EnvironmentVS Code on ChromeOS (Dell 3100), Shadow PC cloud VM [git-scm.com]HardwareFeebz VR 2.0 headset + smartphone [git-scm.com]
-
-📂 Repository Structure
-NCVR/
- ├─ Automation/
- │   ├─ NCVR_Switch.bat      ← Driver‑switching “brain”
- │   └─ curl.exe              ← Network bridge binary
- ├─ Resources/
- │   └─ phone_profiles.json   ← Lens + bitrate configs
- ├─ Logs/
- │   └─ session_log.txt       ← Live telemetry output
- └─ Code.gs                    ← Google Apps Script backend
-
- [git-scm.com]
-
-🚀 Quickstart (5 Minutes)
-1. Requirements
-
-Shadow PC (Windows 10/11)
-One mobile VR driver installed on Windows & phone:
-
-iVRy, VRidge, or Trinus (NCVR supports hot‑swapping) [git-scm.com]
-
-
-Feebz VR 2.0 headset
-USB Tethering recommended for lowest latency
-Google account (for deploying the Apps Script backend)
-
-
-2. Deploy the Apps Script Backend
-
-Open Code.gs in Google Apps Script.
-Click Deploy → New deployment → Web app.
-Set “Anyone with the link” or “Your Google Account” as allowed.
-Copy the deployment URL — you will paste this into the switcher.
-
-
-3. Prepare NCVR on Windows
-
-Download or clone this repository on Shadow PC.
-Place all VR drivers where your PATH or batch script can reach them.
-(Recommended) Replace the bundled curl.exe with an official version:
-PowerShellInvoke-WebRequest https://curl.se/windows/dl-8.7.1_3/curl-8.7.1_3-win64-mingw.zip -OutFile curl.zipGet-FileHash curl.zip -Algorithm SHA256# Compare checksum, extract to Tools\curl\Show more lines
-
-
-(Shipping curl.exe inside repos is discouraged—download from the official source instead.)
-
-4. Run NCVR
-BATNCVR_Switch.bat --driver=vridge --tether=usb --script-url="YOUR_SCRIPT_URL"Show more lines
-
-Replace vridge with ivry or trinus as needed.
-If using Wi‑Fi, remove --tether or replace with your network method.
-
-
-5. Verify Your Session
-
-Put your phone into the Feebz VR headset.
-Connect USB tether (recommended).
-Wait for the switcher to initialize.
-Tail your log:
-
-BATtype Logs\session_log.txtShow more lines
-You should see live data appear — NCVR logs system health & driver transitions.
- [git-scm.com]
-
-📘 Configuration Guide
-Phone Profiles (phone_profiles.json)
-Each profile defines lens spacing, bitrate, FOV, and other optimization values.
-Example:
-JSON{  "device": "Generic Android",  "lens_spacing_mm": 64,  "recommended_bitrate": 35,  "decoder": "hardware"}Show more lines
-Add as many profiles as needed for different phones.
-
-📊 Telemetry (session_log.txt)
-NCVR captures:
-
-Driver loaded
-Tethering method
-Latency snapshots
-Hot‑swap switch events
-Session errors & warnings
-
-Use this to troubleshoot performance issues.
-
-🛠 Building & Development
-Recommended Improvements (PRs welcome!)
-
-Replace curl.exe with a secure installer or first‑run downloader
-Add CI for linting Apps Script & batch
-Add more phone presets
-Add driver auto‑detection
-Create onboarding screenshots or GIFs
-
-
-📦 Releases
-Latest release:
-v1.0.0 — The Genesis Build (Cloud‑Native Console)
-Published Feb 17, 2026
- [git-scm.com]
-
-🤝 Contributing
-Contributions are welcome!
-Future issues may include:
-
-New driver integrations
-Improved telemetry formatting
-Chromebook dashboard enhancements
-Better profile auto‑selection
-
-
-📜 License
-This project is licensed under the MIT License.
+## 📂 Repository Structure
+```text
+NCVR-Core/
+├── .github/                # GitHub Actions & Rulesets
+├── Automation/             # The "Muscle" Tier
+│   ├── NCVR_Switch.bat     # Master Switcher v1.1.0
+│   └── curl.exe            # Network Transport Binary (Optional)
+├── Dashboard/              # The "Frontend" Tier
+│   ├── index.html          # PS4-Style XMB Dashboard
+│   └── styles.css          # Neon-Nexus UI Theme
+├── Resources/              # The "Data" Tier
+│   ├── phone_profiles.json # Lens & Bitrate Calibration
+│   └── nexus_chime.wav     # System Startup Audio
+├── Code.gs                 # The "API" Tier (JavaScript Core)
+├── package.json            # Versioning & npm Registry Metadata
+└── session_log.txt         # Live Telemetry Snapshot
