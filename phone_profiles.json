@@ -1,0 +1,31 @@
+{
+  "nexus_cloud_vr": {
+    "version": "1.0.0",
+    "last_updated": "2024-05-20",
+    "profiles": [
+      {
+        "model": "Generic_Android_6inch",
+        "lens_distance": 64,
+        "distortion_k1": 0.215,
+        "distortion_k2": 0.221,
+        "chromatic_aberration": [0.99, 1.0, 1.01],
+        "fov": 95
+      },
+      {
+        "model": "iPhone_15_Pro",
+        "lens_distance": 62,
+        "distortion_k1": 0.18,
+        "distortion_k2": 0.15,
+        "chromatic_aberration": [1.0, 1.0, 1.0],
+        "fov": 100
+      },
+      {
+        "model": "Feebz_Optimized_High_Detail",
+        "notes": "Custom calibration for Feebz 2.0 Lenses",
+        "oversample": 1.5,
+        "bitrate_mbps": 25,
+        "codec": "HEVC"
+      }
+    ]
+  }
+}
