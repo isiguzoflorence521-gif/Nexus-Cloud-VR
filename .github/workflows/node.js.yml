@@ -1,31 +1,43 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Nexus-OS Native Build CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "nexus-os" ] # Track your Nexus branch
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  release:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # Build on Windows for .exe and Ubuntu for .deb
+        os: [windows-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build Native Binaries
+      # This runs the electron-builder scripts we added to package.json
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          npm run build:win
+        else
+          npm run build:linux
+        fi
+      shell: bash
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nexus-os-${{ matrix.os }}-build
+        path: dist/*.{exe,deb} # Uploads the .exe and .deb files
