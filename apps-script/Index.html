@@ -1,31 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base target="_top">
   <style>
-    :root { --neon-blue: #00d4ff; --dark-bg: #050505; }
-    body { background: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-    .card { border: 1px solid var(--neon-blue); padding: 40px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); text-align: center; }
-    .btn { background: var(--neon-blue); color: black; border: none; padding: 15px 30px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; margin: 10px; }
-    .btn:hover { background: white; box-shadow: 0 0 15px var(--neon-blue); }
-    .status-dot { height: 10px; width: 10px; background-color: #bbb; border-radius: 50%; display: inline-block; margin-right: 5px; }
-    .online { background-color: #00ff00; box-shadow: 0 0 8px #00ff00; }
+    :root { --nexus-blue: #00d4ff; --bg: #050505; --card: #111; }
+    body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid #333; }
+    h1 { color: var(--nexus-blue); letter-spacing: 2px; }
+    
+    .section-title { font-size: 0.8em; color: #888; text-transform: uppercase; margin-top: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    
+    .btn { background: #222; color: white; border: 1px solid #444; padding: 12px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.3s; font-size: 14px; }
+    .btn:hover { border-color: var(--nexus-blue); background: #1a1a1a; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+    .btn-primary { background: var(--nexus-blue); color: black; font-weight: bold; border: none; width: 100%; margin-top: 20px; }
+    
+    .status-box { background: #1a1a1a; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 13px; border-left: 4px solid #ffcc00; }
   </style>
 </head>
 <body>
-  <div class="card">
+
+  <div class="container">
     <h1>NEXUS CLOUD VR</h1>
-    <p><span id="dot" class="status-dot"></span> System Status: <span id="status">Ready</span></p>
-    <button class="btn" onclick="launch('Trinus')">BOOT TRINUS</button>
-    <button class="btn" onclick="launch('VRidge')">BOOT VRIDGE</button>
-    <button class="btn" onclick="launch('iVRy')">BOOT iVRY</button>
+    
+    <div class="status-box">
+      ⚠️ <strong>Power Check:</strong> Ensure 120W Dual-Port Charger is connected to prevent battery drain.
+    </div>
+
+    <div class="section-title">Step 1: Download PC Clients (exe)</div>
+    <div class="grid">
+      <a href="https://github.com" class="btn">Trinus Server</a>
+      <a href="https://github.com" class="btn">VRidge Client</a>
+      <a href="https://github.com" class="btn">iVRy Driver</a>
+      <a href="https://github.com" class="btn">ZeroTier (V-LAN)</a>
+    </div>
+
+    <div class="section-title">Step 2: Control Service</div>
+    <button class="btn btn-primary" onclick="launchService()">BOOT NEXUS CLOUD ENGINE</button>
+    
+    <p id="msg" style="color: var(--nexus-blue); margin-top: 15px; font-size: 14px;"></p>
   </div>
+
   <script>
-    function launch(type) {
-      document.getElementById('status').innerText = 'Initializing ' + type + '...';
-      document.getElementById('dot').classList.add('online');
-      google.script.run.withSuccessHandler(updateUI).startNexusServer(type);
+    function launchService() {
+      document.getElementById('msg').innerText = "Syncing with Shadow PC...";
+      google.script.run.withSuccessHandler(function(response) {
+        document.getElementById('msg').innerText = response;
+      }).startNexusSession("USER_01");
     }
-    function updateUI(res) { console.log(res); }
   </script>
 </body>
 </html>
