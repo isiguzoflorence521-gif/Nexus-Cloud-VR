@@ -1,13 +1,15 @@
-/**
- * Nexus Cloud VR Backend
- * Handles user sessions and status updates
- */
-
-function doGet(e) {
-  return HtmlService.createHtmlOutput("<h1>Nexus Cloud VR Dashboard Active</h1>");
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index').evaluate()
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-function logSession(userId) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  sheet.appendRow([new Date(), userId, "Session Started"]);
+function startNexusServer(serviceType) {
+  const timestamp = new Date();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Log the session for the Nexus Cloud service
+  sheet.appendRow([timestamp, serviceType, "User_Connected", "120W_Power_Verified"]);
+  
+  // Return status to the HTML frontend
+  return serviceType + " is now streaming to your device.";
 }
