@@ -2,33 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Cloud VR - Dashboard</title>
+    <title>Nexus Cloud VR | 120W Docking Dashboard</title>
     <style>
-        body { background: #0a0a0a; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
-        .container { border: 2px solid #00ff00; padding: 30px; display: inline-block; border-radius: 10px; box-shadow: 0 0 20px #00ff00; }
-        .download-btn { display: block; background: #00ff00; color: #000; padding: 15px 25px; margin: 10px; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.3s; }
-        .download-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
-        .status { margin-bottom: 20px; font-size: 1.2em; }
+        body { background: #050505; color: #00d4ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+        .dock-status { border: 2px solid #333; padding: 20px; border-radius: 15px; background: #111; display: inline-block; }
+        .usb-btn { background: #00d4ff; color: #000; padding: 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .pwr-alert { color: #ffcc00; font-size: 0.9em; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="dock-status">
         <h1>NEXUS CLOUD VR</h1>
-        <div class="status">⚡ SYSTEM READY | 120W POWER REQUIRED</div>
+        <p class="pwr-alert">⚡ 120W HDMI DOCK DETECTED</p>
         
-        <!-- STEP 1: PC CLIENTS (Hosted on GitHub Releases) -->
-        <p>Step 1: Download PC Drivers</p>
-        <!-- Replace USER/REPO with your actual GitHub info -->
-        <a href="https://github.com" class="download-btn">Download Trinus Server</a>
-        <a href="https://github.com" class="download-btn">Download VRidge Client</a>
-        <a href="https://github.com" class="download-btn">Download iVRy Driver</a>
-        
-        <hr style="border: 1px solid #333; margin: 20px 0;">
+        <!-- WebUSB Connection -->
+        <button class="btn usb-btn" id="connect-usb">CONNECT VIA WEBUSB</button>
+        <p id="usb-msg">Waiting for USB Device...</p>
 
-        <!-- STEP 2: LAUNCH DASHBOARD -->
-        <p>Step 2: Launch Cloud Interface</p>
-        <a href="https://script.google.com" class="download-btn" style="background: #00d4ff;">Open Nexus Cloud Dashboard</a>
+        <hr style="border: 0.5px solid #222; margin: 20px 0;">
+
+        <!-- EXE DOWNLOADS FROM GITHUB RELEASES -->
+        <p>Step 1: Install PC Bridge (.exe)</p>
+        <a href="https://github.com" style="color:#fff;">Trinus</a> |
+        <a href="https://github.com" style="color:#fff;">VRidge</a> |
+        <a href="https://github.com" style="color:#fff;">iVRy</a>
     </div>
+
+    <script>
+        // WebUSB API Implementation
+        document.getElementById('connect-usb').addEventListener('click', async () => {
+            try {
+                const device = await navigator.usb.requestDevice({ filters: [] });
+                await device.open();
+                await device.selectConfiguration(1);
+                await device.claimInterface(0);
+                document.getElementById('usb-msg').innerText = "Connected to: " + device.productName;
+            } catch (err) {
+                document.getElementById('usb-msg').innerText = "USB Error: " + err;
+            }
+        });
+    </script>
 </body>
 </html>
