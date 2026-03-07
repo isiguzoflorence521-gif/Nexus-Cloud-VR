@@ -1,0 +1,13 @@
+name: Deploy Nexus Cloud
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push to Google Apps Script
+        uses: daikeren/clasp-action@v1.1.0
+        with:
+          command: push
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
