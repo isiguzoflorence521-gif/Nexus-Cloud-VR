@@ -1,1 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><style>
+  body { background: #0a0a0a; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; }
+  .btn { border: 2px solid #00ff00; padding: 20px; background: none; color: #00ff00; cursor: pointer; margin: 10px; }
+</style></head>
+<body>
+  <h1>NEXUS CLOUD VR</h1>
+  <button class="btn" onclick="run('Trinus')">LAUNCH TRINUS</button>
+  <button class="btn" onclick="run('VRidge')">LAUNCH VRIDGE</button>
+  <script>
+    function run(s) { google.script.run.withSuccessHandler(alert).startInstance(s); }
+  </script>
+</body>
+</html>
 
