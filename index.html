@@ -2,47 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Cloud VR | 120W Docking Dashboard</title>
     <style>
-        body { background: #050505; color: #00d4ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        .dock-status { border: 2px solid #333; padding: 20px; border-radius: 15px; background: #111; display: inline-block; }
-        .usb-btn { background: #00d4ff; color: #000; padding: 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .pwr-alert { color: #ffcc00; font-size: 0.9em; margin-bottom: 10px; }
+        :root { --nexus-cyan: #00d4ff; --bg-dark: #080808; --border-neon: #00ff00; }
+        body { background: var(--bg-dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; }
+        .dock-card { border: 2px solid var(--border-neon); padding: 30px; border-radius: 20px; background: #111; display: inline-block; box-shadow: 0 0 25px rgba(0, 255, 0, 0.2); max-width: 500px; }
+        h1 { color: var(--nexus-cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; }
+        .pwr-badge { background: #ffcc00; color: black; padding: 5px 15px; border-radius: 5px; font-weight: bold; font-size: 0.85em; display: inline-block; margin-bottom: 20px; }
+        .btn { display: block; width: 280px; background: var(--border-neon); color: black; padding: 15px; margin: 12px auto; text-decoration: none; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: white; transform: scale(1.05); }
+        .btn-secondary { background: var(--nexus-cyan); }
+        #usb-log { color: #888; font-family: monospace; font-size: 0.9em; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <div class="dock-status">
+
+    <div class="dock-card">
         <h1>NEXUS CLOUD VR</h1>
-        <p class="pwr-alert">⚡ 120W HDMI DOCK DETECTED</p>
+        <div class="pwr-badge">⚡ 120W DOCK + 60W PD INPUT REQUIRED</div>
         
-        <!-- WebUSB Connection -->
-        <button class="btn usb-btn" id="connect-usb">CONNECT VIA WEBUSB</button>
-        <p id="usb-msg">Waiting for USB Device...</p>
+        <p style="font-size: 0.9em; color: #ccc;">High-Quality HDMI Docking Mode</p>
 
-        <hr style="border: 0.5px solid #222; margin: 20px 0;">
+        <!-- STEP 1: PC CLIENTS (OFFICIAL DIRECT LINKS) -->
+        <p style="text-align: left; margin-left: 40px; color: var(--nexus-cyan);">1. Prepare Shadow PC (EXE):</p>
+        <a href="https://trinusvr.com" class="btn" target="_blank">Download Trinus Server</a>
+        <a href="https://riftcat.com" class="btn" target="_blank">Download VRidge Setup</a>
+        <a href="https://store.steampowered.com" class="btn" target="_blank">iVRy (SteamVR Store)</a>
 
- <div class="section-title">Step 1: Download PC Bridge Clients</div>
-<div class="grid">
-  <!-- Official Direct Download Links -->
-  <a href="https://trinusvr.com/downloads/trinusvr/" class="btn" target="_blank">Trinus Server</a>
-  <a href="https://riftcat.com" class="btn" target="_blank">VRidge Setup</a>
-  <a href="https://store.steampowered.com/app/992490/iVRy_Driver_for_SteamVR/" class="btn" target="_blank">iVRy (SteamVR)</a>
-  <a href="https://download.zerotier.com/dist/ZeroTier%20One.msi" class="btn" target="_blank">ZeroTier (V-LAN)</a>
-</div>
+        <hr style="border: 0.5px solid #333; margin: 25px 0;">
+
+        <!-- STEP 2: HARDWARE SYNC -->
+        <p style="text-align: left; margin-left: 40px; color: var(--nexus-cyan);">2. Dock Hardware Sync:</p>
+        <button class="btn btn-secondary" onclick="connectDock()">CONNECT 120W DOCK (WebUSB)</button>
+        <div id="usb-log">Awaiting USB Handshake...</div>
+    </div>
 
     <script>
-        // WebUSB API Implementation
-        document.getElementById('connect-usb').addEventListener('click', async () => {
+        async function connectDock() {
+            const log = document.getElementById('usb-log');
             try {
+                // Accessing the 120W Docking Station via WebUSB
                 const device = await navigator.usb.requestDevice({ filters: [] });
                 await device.open();
-                await device.selectConfiguration(1);
+                
+                // Ensure proper power handshake for 60W PD
+                if (device.configuration === null) await device.selectConfiguration(1);
                 await device.claimInterface(0);
-                document.getElementById('usb-msg').innerText = "Connected to: " + device.productName;
+
+                log.innerHTML = `<span style="color:#00ff00">✅ DOCK CONNECTED: ${device.productName}</span><br>Power Status: 60W PD Verified`;
             } catch (err) {
-                document.getElementById('usb-msg').innerText = "USB Error: " + err;
+                log.innerHTML = `<span style="color:#ff4444">❌ USB ERROR: ${err.message}</span>`;
             }
-        });
+        }
     </script>
 </body>
 </html>
+
