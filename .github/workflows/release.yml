@@ -1,0 +1,25 @@
+name: Upload Release Assets
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on tags starting with v (e.g., v1.0.1)
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            path/to/your/TrinusServer.exe
+            path/to/your/VRidgeSetup.exe
+            path/to/your/iVRy_Driver.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
